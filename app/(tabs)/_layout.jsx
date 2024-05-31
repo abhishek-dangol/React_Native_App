@@ -1,36 +1,106 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View, Image } from "react-native";
+import { Tabs, Redirect } from "expo-router";
 import React from "react";
-import { SplashScreen, Slot, Stack } from "expo-router";
-import { useFonts } from "expo-font";
-import { useEffect } from "react";
+import { icons } from "../../constants";
 
-SplashScreen.preventAutoHideAsync;
-
-const RootLayout = () => {
-  const [fontsLoaded, error] = useFonts({
-    "Poppins-Black": require("../../assets/fonts/Poppins-Black.ttf"),
-    "Poppins-Bold": require("../../assets/fonts/Poppins-Bold.ttf"),
-    "Poppins-ExtraBold": require("../../assets/fonts/Poppins-ExtraBold.ttf"),
-    "Poppins-ExtraLight": require("../../assets/fonts/Poppins-ExtraLight.ttf"),
-    "Poppins-Light": require("../../assets/fonts/Poppins-Light.ttf"),
-    "Poppins-Medium": require("../../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-SemiBold": require("../../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Thin": require("../../assets/fonts/Poppins-Thin.ttf"),
-  });
-
-  useEffect(() => {
-    if (error) throw error;
-    if (fontsLoaded) SplashScreen.hideAsync();
-  }, [fontsLoaded, error]);
-
-  if (!fontsLoaded && !error) return null;
-
+const TabIcon = ({ icon, color, name, focused }) => {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-    </Stack>
+    <View className="items-center justify-center gap-2">
+      <Image
+        source={icon}
+        resizeMode="contain"
+        tintColor={color}
+        className="w-6 h-6"
+      />
+      <Text
+        className={`${focused ? "font-psemibold" : "font-pregular"} text-xs`}
+        style={{ color: color }}
+      >
+        {name}
+      </Text>
+    </View>
   );
 };
 
-export default RootLayout;
+const TabsLayout = () => {
+  return (
+    <>
+      <Tabs
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarActiveTintColor: "#FFA001",
+          tabBarInactiveTintColor: "#CDCDE0",
+          tabBarStyle: {
+            backgroundColor: "#161622",
+            borderTopWidth: 1,
+            borderTopColor: "#232533",
+            height: 84,
+          },
+        }}
+      >
+        <Tabs.Screen
+          name="home"
+          options={{
+            title: "Home",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.home}
+                color={color}
+                name="Home"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="bookmark"
+          options={{
+            title: "Bookmark",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.bookmark}
+                color={color}
+                name="Bookmark"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="create"
+          options={{
+            title: "Create",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.plus}
+                color={color}
+                name="Create"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: "Profile",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.profile}
+                color={color}
+                name="Profile"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+      </Tabs>
+    </>
+  );
+};
+
+export default TabsLayout;
