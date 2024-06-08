@@ -5,6 +5,7 @@ import FormField from "../../components/FormField";
 import { SafeAreaView, ScrollView } from "react-native";
 import CustomButton from "../../components/CustomButton";
 import { Link } from "expo-router";
+import { createUser } from "../../lib/appwrite";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -13,7 +14,9 @@ const SignUp = () => {
     password: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const submit = () => {};
+  const submit = () => {
+    createUser();
+  };
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
